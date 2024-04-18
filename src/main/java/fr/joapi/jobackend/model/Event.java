@@ -6,6 +6,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 import java.util.Date;
 import java.util.List;
@@ -21,6 +23,9 @@ import jakarta.persistence.GenerationType;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = { "date", "stadium_uuid" })
+})
 public class Event {
 
     @Id
