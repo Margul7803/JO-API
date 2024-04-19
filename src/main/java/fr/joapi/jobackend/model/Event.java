@@ -12,6 +12,8 @@ import jakarta.persistence.UniqueConstraint;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -40,7 +42,12 @@ public class Event {
     private Integer maxEntry;
 
     @Column(nullable = false)
-    private Date date;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Europe/Paris")
+    private Date startDate;
+
+    @Column(nullable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Europe/Paris")
+    private Date endDate;
 
     @Column(nullable = false)
     private Boolean status;
@@ -52,6 +59,14 @@ public class Event {
     @JoinColumn(name = "stadium_uuid")
     private Stadium stadium;
 
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
-    private List<Ticket> tickets;
+    public Event(String name, Integer maxEntry, Date starDate, Date endDate, Boolean status, Boolean ticketing,
+            Stadium stadium) {
+        this.name = name;
+        this.maxEntry = maxEntry;
+        this.startDate = starDate;
+        this.endDate = endDate;
+        this.status = status;
+        this.ticketing = ticketing;
+        this.stadium = stadium;
+    }
 }
