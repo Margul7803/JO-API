@@ -32,7 +32,4 @@ public class Stadium {
 
     @Column(nullable = false)
     private Integer capacity;
-
-    @OneToMany(mappedBy = "stadium", cascade = CascadeType.ALL)
-    private List<Event> events;
 }
