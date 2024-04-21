@@ -3,11 +3,6 @@ package fr.joapi.jobackend.model;
 import lombok.*;
 
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-
-import java.util.List;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
