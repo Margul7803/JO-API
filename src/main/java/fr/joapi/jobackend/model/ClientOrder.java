@@ -5,8 +5,10 @@ import lombok.*;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 import java.util.Date;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,8 +27,8 @@ public class ClientOrder {
     @Column(nullable = false)
     private String uuid;
 
-    @Column(nullable = false)
-    private String description;
+    @OneToMany(mappedBy = "clientOrder")
+    private List<Ticket> tickets;
 
     @Column(nullable = false)
     private Date date;

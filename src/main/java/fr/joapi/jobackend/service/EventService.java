@@ -31,7 +31,8 @@ public class EventService {
 
     public Event create(EventDto event) {
 
-        Event eventToCreate = new Event(event.getName(), event.getMaxEntry(), event.getStartDate(), event.getEndDate(),
+        Event eventToCreate = new Event(event.getName(), event.getMaxEntry(), event.getPrice(), event.getStartDate(),
+                event.getEndDate(),
                 event.getStatus(), event.getTicketing(), event.getStadium());
         return repository.save(eventToCreate);
     }
@@ -78,6 +79,9 @@ public class EventService {
             }
             if (event.getMaxEntry() != null) {
                 eventToUpdate.setMaxEntry(event.getMaxEntry());
+            }
+            if (event.getPrice() != 0) {
+                eventToUpdate.setPrice(event.getPrice());
             }
             if (event.getStatus() != null) {
                 eventToUpdate.setStatus(event.getStatus());

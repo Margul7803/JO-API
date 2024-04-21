@@ -17,6 +17,8 @@ public class EventDto {
 
     private Integer maxEntry;
 
+    private float price;
+
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Europe/Paris")
     private Date startDate;
 

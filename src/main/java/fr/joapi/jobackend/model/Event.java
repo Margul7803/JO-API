@@ -5,16 +5,13 @@ import lombok.*;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
 import java.util.Date;
-import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -42,6 +39,9 @@ public class Event {
     private Integer maxEntry;
 
     @Column(nullable = false)
+    private float price;
+
+    @Column(nullable = false)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Europe/Paris")
     private Date startDate;
 
@@ -59,7 +59,8 @@ public class Event {
     @JoinColumn(name = "stadium_uuid")
     private Stadium stadium;
 
-    public Event(String name, Integer maxEntry, Date starDate, Date endDate, Boolean status, Boolean ticketing,
+    public Event(String name, Integer maxEntry, float price, Date starDate, Date endDate, Boolean status,
+            Boolean ticketing,
             Stadium stadium) {
         this.name = name;
         this.maxEntry = maxEntry;
@@ -68,5 +69,6 @@ public class Event {
         this.status = status;
         this.ticketing = ticketing;
         this.stadium = stadium;
+        this.price = price;
     }
 }
