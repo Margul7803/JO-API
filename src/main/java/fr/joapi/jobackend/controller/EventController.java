@@ -38,8 +38,8 @@ public class EventController {
 
     @GetMapping("/{uuid}")
     public ResponseEntity<Event> findOneById(@PathVariable String uuid) {
-        Event student = service.findEventById(uuid);
-        if (student != null) {
+        Event event = service.findEventById(uuid);
+        if (event != null) {
             return new ResponseEntity<>(service.findEventById(uuid), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -47,8 +47,8 @@ public class EventController {
 
     @PostMapping
     public ResponseEntity<Event> save(@Valid @RequestBody EventDto event) {
-        Event createdStudent = service.create(event);
-        return new ResponseEntity<>(createdStudent, HttpStatus.CREATED);
+        Event createdEvent = service.create(event);
+        return new ResponseEntity<>(createdEvent, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{uuid}")
