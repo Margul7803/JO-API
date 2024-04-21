@@ -32,4 +32,10 @@ public class Stadium {
 
     @Column(nullable = false)
     private Integer capacity;
+
+    public Stadium(String name, String address, Integer capacity) {
+        this.name = name;
+        this.address = address;
+        this.capacity = capacity;
+    }
 }
