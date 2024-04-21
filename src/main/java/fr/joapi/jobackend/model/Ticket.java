@@ -24,9 +24,18 @@ public class Ticket {
     private String uuid;
 
     @Column(nullable = false)
-    private float price;
+    private String clientName;
+
+    @Column(nullable = false)
+    private String clientLastName;
 
     @ManyToOne
     @JoinColumn(name = "event_uuid")
     private Event event;
+
+    public Ticket(String clientLastName, String clientName, Event event) {
+        this.clientLastName = clientLastName;
+        this.clientName = clientName;
+        this.event = event;
+    }
 }
