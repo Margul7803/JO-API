@@ -28,7 +28,8 @@ public class TicketService {
     }
 
     public Ticket create(TicketDto ticket) {
-        Ticket ticketToCreate = new Ticket(ticket.getClientLastName(), ticket.getClientName(), ticket.getEvent());
+        Ticket ticketToCreate = new Ticket(ticket.getClientLastName(), ticket.getClientName(), ticket.getEvent(),
+                ticket.getClientOrder());
         return repository.save(ticketToCreate);
     }
 
@@ -49,6 +50,7 @@ public class TicketService {
             ticketToUpdate.setClientLastName(ticket.getClientLastName());
             ticketToUpdate.setClientName(ticket.getClientName());
             ticketToUpdate.setEvent(ticket.getEvent());
+            ticketToUpdate.setClientOrder(ticket.getClientOrder());
             repository.save(ticketToUpdate);
             return true;
         }

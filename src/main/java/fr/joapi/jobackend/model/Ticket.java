@@ -6,6 +6,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,12 +33,18 @@ public class Ticket {
     private String clientLastName;
 
     @ManyToOne
-    @JoinColumn(name = "event_uuid")
+    @JoinColumn(name = "clientOrder_uuid", nullable = false)
+    @JsonBackReference
+    private ClientOrder clientOrder;
+
+    @ManyToOne
+    @JoinColumn(name = "event_uuid", nullable = false)
     private Event event;
 
-    public Ticket(String clientLastName, String clientName, Event event) {
+    public Ticket(String clientLastName, String clientName, Event event, ClientOrder clientOrder) {
         this.clientLastName = clientLastName;
         this.clientName = clientName;
+        this.clientOrder = clientOrder;
         this.event = event;
     }
 }

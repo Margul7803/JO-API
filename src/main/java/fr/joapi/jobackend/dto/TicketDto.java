@@ -1,5 +1,6 @@
 package fr.joapi.jobackend.dto;
 
+import fr.joapi.jobackend.model.ClientOrder;
 import fr.joapi.jobackend.model.Event;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,4 +15,6 @@ public class TicketDto {
     private String clientLastName;
 
     private Event event;
+
+    private ClientOrder clientOrder;
 }

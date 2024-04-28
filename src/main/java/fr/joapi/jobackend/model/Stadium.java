@@ -3,6 +3,13 @@ package fr.joapi.jobackend.model;
 import lombok.*;
 
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,6 +34,10 @@ public class Stadium {
 
     @Column(nullable = false)
     private Integer capacity;
+
+    @OneToMany(mappedBy = "stadium", orphanRemoval = false)
+    @JsonManagedReference
+    private List<Event> events;
 
     public Stadium(String name, String address, Integer capacity) {
         this.name = name;

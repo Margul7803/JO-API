@@ -10,7 +10,9 @@ import jakarta.persistence.UniqueConstraint;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -57,6 +59,7 @@ public class Event {
 
     @ManyToOne
     @JoinColumn(name = "stadium_uuid")
+    @JsonBackReference
     private Stadium stadium;
 
     public Event(String name, Integer maxEntry, float price, Date starDate, Date endDate, Boolean status,

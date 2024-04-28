@@ -5,10 +5,14 @@ import lombok.*;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,17 +30,20 @@ public class ClientOrder {
     @Column(nullable = false)
     private String uuid;
 
-    @OneToMany(mappedBy = "clientOrder")
+    @OneToMany(mappedBy = "clientOrder", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Ticket> tickets;
 
     @Column(nullable = false)
     private Date date;
 
     @ManyToOne
-    @JoinColumn(name = "client_uuid")
+    @JoinColumn(name = "client_uuid", nullable = false)
+    @JsonBackReference
     private Client client;
 
     public ClientOrder(List<Ticket> tickets, Client client) {
+        this.date = new Date();
         this.tickets = tickets;
         this.client = client;
     }

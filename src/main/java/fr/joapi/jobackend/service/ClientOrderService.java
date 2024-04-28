@@ -3,12 +3,14 @@ package fr.joapi.jobackend.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import fr.joapi.jobackend.dto.ClientOrderDto;
 import fr.joapi.jobackend.model.ClientOrder;
 import fr.joapi.jobackend.repository.ClientOrderRepository;
 import jakarta.transaction.Transactional;
 
+@Service
 public class ClientOrderService {
     private final ClientOrderRepository repository;
 
