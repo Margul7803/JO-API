@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import fr.joapi.jobackend.dto.StadiumDto;
 import fr.joapi.jobackend.model.Stadium;
 import fr.joapi.jobackend.service.StadiumService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
 @RequestMapping("/stadiums")
@@ -30,11 +32,13 @@ public class StadiumController {
     }
 
     @GetMapping
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     public ResponseEntity<List<Stadium>> findAll() {
         return new ResponseEntity<>(service.findAllStadiums(), HttpStatus.OK);
     }
 
     @GetMapping("/{uuid}")
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     public ResponseEntity<Stadium> findOneById(@PathVariable String uuid) {
         Stadium stadium = service.findStadiumById(uuid);
         if (stadium != null) {
@@ -44,12 +48,14 @@ public class StadiumController {
     }
 
     @PostMapping
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     public ResponseEntity<Stadium> save(@Valid @RequestBody StadiumDto stadium) {
         Stadium createdStadium = service.create(stadium);
         return new ResponseEntity<>(createdStadium, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{uuid}")
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     public ResponseEntity<?> delete(@PathVariable String uuid) {
         boolean isDeleted = service.delete(uuid);
         if (isDeleted) {
@@ -59,6 +65,7 @@ public class StadiumController {
     }
 
     @PutMapping("/{uuid}")
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     public ResponseEntity<?> mettreAJourTotalement(
             @PathVariable String uuid,
             @RequestBody StadiumDto stadium) {

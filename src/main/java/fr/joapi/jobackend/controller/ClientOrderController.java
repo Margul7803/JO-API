@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import fr.joapi.jobackend.dto.ClientOrderDto;
 import fr.joapi.jobackend.model.ClientOrder;
 import fr.joapi.jobackend.service.ClientOrderService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
 @RequestMapping("/client-orders")
@@ -30,11 +32,13 @@ public class ClientOrderController {
     }
 
     @GetMapping
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     public ResponseEntity<List<ClientOrder>> findAll() {
         return new ResponseEntity<>(service.findAllClientOrders(), HttpStatus.OK);
     }
 
     @GetMapping("/{uuid}")
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     public ResponseEntity<ClientOrder> findOneById(@PathVariable String uuid) {
         ClientOrder clientOrder = service.findClientOrderById(uuid);
         if (clientOrder != null) {
@@ -44,12 +48,14 @@ public class ClientOrderController {
     }
 
     @PostMapping
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     public ResponseEntity<ClientOrder> save(@Valid @RequestBody ClientOrderDto clientOrder) {
         ClientOrder createdclientOrder = service.create(clientOrder);
         return new ResponseEntity<>(createdclientOrder, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{uuid}")
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     public ResponseEntity<?> delete(@PathVariable String uuid) {
         boolean isDeleted = service.delete(uuid);
         if (isDeleted) {
@@ -59,6 +65,7 @@ public class ClientOrderController {
     }
 
     @PutMapping("/{uuid}")
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     public ResponseEntity<?> mettreAJourTotalement(
             @PathVariable String uuid,
             @RequestBody ClientOrderDto clientOrder) {

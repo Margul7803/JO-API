@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import fr.joapi.jobackend.dto.EventDto;
 import fr.joapi.jobackend.model.Event;
 import fr.joapi.jobackend.service.EventService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
 @RequestMapping("/events")
@@ -46,12 +48,14 @@ public class EventController {
     }
 
     @PostMapping
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     public ResponseEntity<Event> save(@Valid @RequestBody EventDto event) {
         Event createdEvent = service.create(event);
         return new ResponseEntity<>(createdEvent, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{uuid}")
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     public ResponseEntity<?> delete(@PathVariable String uuid) {
         boolean isDeleted = service.delete(uuid);
         if (isDeleted) {
@@ -61,6 +65,7 @@ public class EventController {
     }
 
     @PutMapping("/{uuid}")
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     public ResponseEntity<?> mettreAJourTotalement(
             @PathVariable String uuid,
             @RequestBody EventDto event) {
@@ -72,6 +77,7 @@ public class EventController {
     }
 
     @PatchMapping("/{uuid}")
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     public ResponseEntity<?> mettreAjourPartiellement(
             @PathVariable String uuid,
             @RequestBody EventDto event) {

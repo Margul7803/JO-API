@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import fr.joapi.jobackend.dto.TicketDto;
 import fr.joapi.jobackend.model.Ticket;
 import fr.joapi.jobackend.service.TicketService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
 @RequestMapping("/tickets")
@@ -30,11 +32,13 @@ public class TicketController {
     }
 
     @GetMapping
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     public ResponseEntity<List<Ticket>> findAll() {
         return new ResponseEntity<>(service.findAllTickets(), HttpStatus.OK);
     }
 
     @GetMapping("/{uuid}")
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     public ResponseEntity<Ticket> findOneById(@PathVariable String uuid) {
         Ticket ticket = service.findTicketById(uuid);
         if (ticket != null) {
@@ -44,12 +48,14 @@ public class TicketController {
     }
 
     @PostMapping
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     public ResponseEntity<Ticket> save(@Valid @RequestBody TicketDto ticket) {
         Ticket createdTicket = service.create(ticket);
         return new ResponseEntity<>(createdTicket, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{uuid}")
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     public ResponseEntity<?> delete(@PathVariable String uuid) {
         boolean isDeleted = service.delete(uuid);
         if (isDeleted) {
@@ -59,6 +65,7 @@ public class TicketController {
     }
 
     @PutMapping("/{uuid}")
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     public ResponseEntity<?> mettreAJourTotalement(
             @PathVariable String uuid,
             @RequestBody TicketDto ticket) {
