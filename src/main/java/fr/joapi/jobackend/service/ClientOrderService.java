@@ -28,7 +28,7 @@ public class ClientOrderService {
     }
 
     public ClientOrder create(ClientOrderDto clientOrder) {
-        ClientOrder clientOrderToCreate = new ClientOrder(clientOrder.getTickets(), clientOrder.getClient());
+        ClientOrder clientOrderToCreate = new ClientOrder(clientOrder.getTickets(), clientOrder.getUser());
         return repository.save(clientOrderToCreate);
     }
 
@@ -46,7 +46,7 @@ public class ClientOrderService {
         ClientOrder clientOrderToUpdate = findClientOrderById(uuid);
 
         if (clientOrderToUpdate != null) {
-            clientOrderToUpdate.setClient(clientOrder.getClient());
+            clientOrderToUpdate.setUser(clientOrder.getUser());
             clientOrderToUpdate.setTickets(clientOrder.getTickets());
             repository.save(clientOrderToUpdate);
             return true;

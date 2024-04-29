@@ -38,13 +38,13 @@ public class ClientOrder {
     private Date date;
 
     @ManyToOne
-    @JoinColumn(name = "client_uuid", nullable = false)
+    @JoinColumn(name = "user_uuid", nullable = false)
     @JsonBackReference
-    private Client client;
+    private User user;
 
-    public ClientOrder(List<Ticket> tickets, Client client) {
+    public ClientOrder(List<Ticket> tickets, User user) {
         this.date = new Date();
         this.tickets = tickets;
-        this.client = client;
+        this.user = user;
     }
 }
