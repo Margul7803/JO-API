@@ -18,7 +18,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.List;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 public class AuthConfiguration {
 	private final AuthenticationProvider authenticationProvider;
 	private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -36,26 +36,14 @@ public class AuthConfiguration {
 		http
 				.csrf(AbstractHttpConfigurer::disable)
 				.authorizeHttpRequests(
-						requests -> requests.requestMatchers(new AntPathRequestMatcher("/**")).permitAll()
-								.anyRequest().authenticated())
+						requests -> requests.requestMatchers(new AntPathRequestMatcher("/api/admin")).hasRole("ADMIN")
+								.requestMatchers(new AntPathRequestMatcher("/auth/**")).permitAll()
+								.requestMatchers(new AntPathRequestMatcher("/swagger-ui/**")).permitAll()
+								.requestMatchers(new AntPathRequestMatcher("/v3/api-docs/**")).permitAll()
+								.anyRequest().permitAll())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authenticationProvider(authenticationProvider)
 				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 		return http.build();
-	}
-
-	@Bean
-	CorsConfigurationSource corsConfigurationSource() {
-		CorsConfiguration configuration = new CorsConfiguration();
-
-		configuration.setAllowedOrigins(List.of("http://localhost:9090"));
-		configuration.setAllowedMethods(List.of("GET", "POST"));
-		configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
-
-		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-
-		source.registerCorsConfiguration("/**", configuration);
-
-		return source;
 	}
 }

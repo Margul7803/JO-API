@@ -1,6 +1,8 @@
 package fr.joapi.jobackend.controller;
 
 import java.util.List;
+
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import fr.joapi.jobackend.dto.ClientOrderDto;
 import fr.joapi.jobackend.model.ClientOrder;
 import fr.joapi.jobackend.service.ClientOrderService;
+import fr.joapi.jobackend.service.JwtService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
@@ -25,16 +28,29 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 @RequestMapping("/client-orders")
 public class ClientOrderController {
     private final ClientOrderService service;
+    private final JwtService jwtService;
 
     @Autowired
-    public ClientOrderController(ClientOrderService service) {
+    public ClientOrderController(ClientOrderService service, JwtService jwtService) {
         this.service = service;
+        this.jwtService = jwtService;
     }
 
     @GetMapping
     @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     public ResponseEntity<List<ClientOrder>> findAll() {
         return new ResponseEntity<>(service.findAllClientOrders(), HttpStatus.OK);
+    }
+
+    @GetMapping("/me")
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
+    public ResponseEntity<String> findAllClientOrdersByUser(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            final String userEmail = jwtService.extractUsername(bearerToken);
+            return new ResponseEntity<>(userEmail, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/{uuid}")

@@ -49,9 +49,13 @@ public class EventController {
 
     @PostMapping
     @Operation(security = { @SecurityRequirement(name = "bearer-key") })
-    public ResponseEntity<Event> save(@Valid @RequestBody EventDto event) {
-        Event createdEvent = service.create(event);
-        return new ResponseEntity<>(createdEvent, HttpStatus.CREATED);
+    public ResponseEntity<?> save(@Valid @RequestBody EventDto event) {
+        try {
+            Event createdEvent = service.create(event);
+            return new ResponseEntity<>(createdEvent, HttpStatus.CREATED);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(e.getCause(), HttpStatus.CONFLICT);
+        }
     }
 
     @DeleteMapping("/{uuid}")

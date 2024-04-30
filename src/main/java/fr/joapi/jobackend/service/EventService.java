@@ -5,8 +5,10 @@ import org.springframework.stereotype.Service;
 import fr.joapi.jobackend.dto.EventDto;
 import fr.joapi.jobackend.model.Event;
 import fr.joapi.jobackend.repository.EventRepository;
+import fr.joapi.jobackend.repository.StadiumRepository;
 import jakarta.transaction.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +18,12 @@ public class EventService {
 
     private final EventRepository repository;
 
+    private final StadiumRepository stadiumRepository;
+
     @Autowired
-    public EventService(EventRepository repository) {
+    public EventService(EventRepository repository, StadiumRepository stadiumRepository) {
         this.repository = repository;
+        this.stadiumRepository = stadiumRepository;
     }
 
     public List<Event> findAllEvents() {
@@ -30,7 +35,9 @@ public class EventService {
     }
 
     public Event create(EventDto event) {
-
+        if (event.getMaxEntry() > (stadiumRepository.findOneByUuid(event.getStadium().getUuid()).get().getCapacity())) {
+            throw new RuntimeException("Error: Event entry is higher than stadium capacity");
+        }
         Event eventToCreate = new Event(event.getName(), event.getMaxEntry(), event.getPrice(), event.getStartDate(),
                 event.getEndDate(),
                 event.getStatus(), event.getTicketing(), event.getStadium());

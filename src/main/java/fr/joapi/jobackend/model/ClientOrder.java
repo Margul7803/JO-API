@@ -42,9 +42,13 @@ public class ClientOrder {
     @JsonBackReference
     private User user;
 
-    public ClientOrder(List<Ticket> tickets, User user) {
+    @Column(nullable = false)
+    private float finalPrice;
+
+    public ClientOrder(List<Ticket> tickets, User user, float finalPrice) {
         this.date = new Date();
         this.tickets = tickets;
         this.user = user;
+        this.finalPrice = finalPrice;
     }
 }
