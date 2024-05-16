@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import fr.joapi.jobackend.dto.ClientOrderDto;
 import fr.joapi.jobackend.model.ClientOrder;
@@ -44,11 +45,14 @@ public class ClientOrderController {
 
     @GetMapping("/me")
     @Operation(security = { @SecurityRequirement(name = "bearer-key") })
-    public ResponseEntity<String> findAllClientOrdersByUser(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
+    public ResponseEntity<?> findAllClientOrdersByUser(
+            @RequestHeader("Authorization") String bearerToken) {
+        String token = bearerToken.substring(7);
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            final String userEmail = jwtService.extractUsername(bearerToken);
-            return new ResponseEntity<>(userEmail, HttpStatus.OK);
+            final String userEmail = jwtService.extractUsername(token);
+            if (userEmail != null) {
+                return new ResponseEntity<>(service.findAllClientOrdersByUser(userEmail), HttpStatus.OK);
+            }
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }

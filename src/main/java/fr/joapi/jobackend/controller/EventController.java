@@ -6,6 +6,9 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -24,6 +27,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
 @RequestMapping("/events")
+@EnableMethodSecurity
 public class EventController {
 
     private final EventService service;
@@ -34,6 +38,7 @@ public class EventController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<List<Event>> findAll() {
         return new ResponseEntity<>(service.findAllEvents(), HttpStatus.OK);
     }
@@ -49,6 +54,7 @@ public class EventController {
 
     @PostMapping
     @Operation(security = { @SecurityRequirement(name = "bearer-key") })
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> save(@Valid @RequestBody EventDto event) {
         try {
             Event createdEvent = service.create(event);
