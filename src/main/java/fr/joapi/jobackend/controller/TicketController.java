@@ -2,12 +2,12 @@ package fr.joapi.jobackend.controller;
 
 import java.util.List;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,12 +35,14 @@ public class TicketController {
 
     @GetMapping
     @Operation(security = { @SecurityRequirement(name = "bearer-key") })
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<Ticket>> findAll() {
         return new ResponseEntity<>(service.findAllTickets(), HttpStatus.OK);
     }
 
     @GetMapping("/{uuid}")
     @Operation(security = { @SecurityRequirement(name = "bearer-key") })
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Ticket> findOneById(@PathVariable String uuid) {
         Ticket ticket = service.findTicketById(uuid);
         if (ticket != null) {
@@ -51,6 +53,7 @@ public class TicketController {
 
     @PostMapping
     @Operation(security = { @SecurityRequirement(name = "bearer-key") })
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> save(@Valid @RequestBody TicketDto ticket) {
         try {
             Ticket createdTicket = service.create(ticket);
@@ -62,6 +65,7 @@ public class TicketController {
 
     @DeleteMapping("/{uuid}")
     @Operation(security = { @SecurityRequirement(name = "bearer-key") })
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> delete(@PathVariable String uuid) {
         boolean isDeleted = service.delete(uuid);
         if (isDeleted) {
@@ -72,6 +76,7 @@ public class TicketController {
 
     @PutMapping("/{uuid}")
     @Operation(security = { @SecurityRequirement(name = "bearer-key") })
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> mettreAJourTotalement(
             @PathVariable String uuid,
             @RequestBody TicketDto ticket) {

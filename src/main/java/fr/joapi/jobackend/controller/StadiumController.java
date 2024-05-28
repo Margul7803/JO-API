@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 
 import fr.joapi.jobackend.dto.StadiumDto;
 import fr.joapi.jobackend.model.Stadium;
@@ -23,6 +25,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
 @RequestMapping("/stadiums")
+@EnableMethodSecurity
 public class StadiumController {
     private final StadiumService service;
 
@@ -49,6 +52,7 @@ public class StadiumController {
 
     @PostMapping
     @Operation(security = { @SecurityRequirement(name = "bearer-key") })
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Stadium> save(@Valid @RequestBody StadiumDto stadium) {
         Stadium createdStadium = service.create(stadium);
         return new ResponseEntity<>(createdStadium, HttpStatus.CREATED);
@@ -56,6 +60,7 @@ public class StadiumController {
 
     @DeleteMapping("/{uuid}")
     @Operation(security = { @SecurityRequirement(name = "bearer-key") })
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> delete(@PathVariable String uuid) {
         boolean isDeleted = service.delete(uuid);
         if (isDeleted) {
@@ -66,6 +71,7 @@ public class StadiumController {
 
     @PutMapping("/{uuid}")
     @Operation(security = { @SecurityRequirement(name = "bearer-key") })
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> mettreAJourTotalement(
             @PathVariable String uuid,
             @RequestBody StadiumDto stadium) {
