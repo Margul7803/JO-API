@@ -8,7 +8,6 @@ import fr.joapi.jobackend.repository.EventRepository;
 import fr.joapi.jobackend.repository.StadiumRepository;
 import jakarta.transaction.Transactional;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
