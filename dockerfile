@@ -1,10 +1,16 @@
-# Use the official PostgreSQL image as the base image
-FROM postgres:latest
+# Utiliser une image Maven pour compiler le projet
+FROM maven:3.6.3-openjdk-17-slim AS build
+WORKDIR /app
 
-# Set environment variables for PostgreSQL
-ENV POSTGRES_USER postgres
-ENV POSTGRES_PASSWORD mario
-ENV POSTGRES_DB jodb
+# Copier le fichier pom.xml et les sources
+COPY pom.xml .
+COPY src ./src
 
-# Expose the PostgreSQL port
-EXPOSE 5432
+# Télécharger les dépendances
+RUN mvn clean install -DskipTests
+
+# Exposer le port 8080
+EXPOSE 8080
+
+# Commande pour exécuter l'application
+CMD ["mvn", "spring-boot:run"]

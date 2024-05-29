@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: jo-db
+    environment:
+      POSTGRES_DB: "jodb"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "mario"
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  spring-boot-app:
+    build:
+      context: .
+      dockerfile: dockerfile
+    container_name: jo-api
+    depends_on:
+      - db
+    ports:
+      - "8080:8080"
+
+volumes:
+  db_data:
